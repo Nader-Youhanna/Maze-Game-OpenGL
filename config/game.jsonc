@@ -1,0 +1,448 @@
+{
+  "start-scene": "menu",
+  "window": {
+    "title": "Default Game Window",
+    "size": {
+      "width": 1280,
+      "height": 720
+    },
+    "fullscreen": false
+  },
+  "scene": {
+    "renderer": {
+      "sky": "assets/textures/sky.jpg",
+      // "postprocess": "assets/shaders/postprocess/fog-display.frag"
+      "postprocess": "assets/shaders/postprocess/vignette.frag"
+    },
+    "assets": {
+      "shaders": {
+        "tinted": {
+          "vs": "assets/shaders/tinted.vert",
+          "fs": "assets/shaders/tinted.frag"
+        },
+        "textured": {
+          "vs": "assets/shaders/textured.vert",
+          "fs": "assets/shaders/textured.frag"
+        }
+      },
+      "textures": {
+        "moon": "assets/textures/moon.jpg",
+        "grass": "assets/textures/grass_ground_d.jpg",
+        "wood": "assets/textures/wood.jpg",
+        "bricks": "assets/textures/bricks.jpg",
+        "glass": "assets/textures/glass-panels.png",
+        "monkey": "assets/textures/monkey.png"
+      },
+      "meshes": {
+        "cube": "assets/models/cube.obj",
+        "monkey": "assets/models/monkey.obj",
+        "plane": "assets/models/plane.obj",
+        "sphere": "assets/models/sphere.obj"
+      },
+      "samplers": {
+        "default": {},
+        "pixelated": {
+          "MAG_FILTER": "GL_NEAREST"
+        }
+      },
+      "materials": {
+        "metal": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [0.45, 0.4, 0.5, 1]
+        },
+        "glass": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            },
+            "blending": {
+              "enabled": true,
+              "sourceFactor": "GL_SRC_ALPHA",
+              "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+            },
+            "depthMask": false
+          },
+          "transparent": true,
+          "tint": [1, 1, 1, 1],
+          "texture": "glass",
+          "sampler": "pixelated"
+        },
+
+        "grass": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "grass",
+          "sampler": "default"
+        },
+
+        "wall": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "bricks",
+          "sampler": "default"
+        },
+
+        "monkey": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "monkey",
+          "sampler": "default"
+        },
+        "moon": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "moon",
+          "sampler": "default"
+        }
+      }
+    },
+    "world": [
+      {
+        // "position": [50, -5, -175], Next to exit
+        "position": [60, -5, 100],
+        "components": [
+          {
+            "type": "Camera"
+          },
+          {
+            "type": "Free Camera Controller"
+          }
+        ],
+        "children": [
+          {
+            "position": [1, -1, -1],
+            "rotation": [45, 45, 0],
+            "scale": [0.1, 0.1, 1.0],
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "cube",
+                "material": "metal"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        "position": [53, -10, 0],
+        "rotation": [-90, 0, 0],
+        "scale": [180, 190, 25],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "plane",
+            "material": "grass"
+          }
+        ]
+      }, // add here more objects
+
+      {
+        "position": [50, 0, 160], //Bottom Right Wall
+        "rotation": [0, 0, 0],
+        "scale": [175, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [178, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [227, 0, -13], //Right long Wall
+        "rotation": [0, 90, 0],
+        "scale": [175, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 178]
+          }
+        ]
+      },
+
+      {
+        "position": [-125, 0, -13], //left long Wall
+        "rotation": [0, 90, 0],
+        "scale": [175, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 178]
+          }
+        ]
+      },
+
+      {
+        "position": [139, 0, -190], //Top right mini Wall
+        "rotation": [0, 0, 0],
+        "scale": [90, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [92, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [-50, 0, -190], //Top left mini Wall
+        "rotation": [0, 0, 0],
+        "scale": [77, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [75, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [-50, 0, -40], //Middle left medium Wall
+        "rotation": [0, 90, 0],
+        "scale": [150, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 152]
+          }
+        ]
+      },
+
+      {
+        "position": [130, 0, 40], //Middle right medium Wall
+        "rotation": [0, 90, 0],
+        "scale": [70, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 72]
+          }
+        ]
+      },
+
+      {
+        "position": [58, 0, 108], //Middle bottom flat Wall
+        "rotation": [0, 0, 0],
+        "scale": [70, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [72, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [18, 0, 40], //Middle mid flat Wall
+        "rotation": [0, 0, 0],
+        "scale": [70, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [72, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [90, 0, 7], //Middle bottom spike Wall
+        "rotation": [0, 90, 0],
+        "scale": [35, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 37]
+          }
+        ]
+      },
+
+      {
+        "position": [90, 0, -155], //Middle top spike Wall
+        "rotation": [0, 90, 0],
+        "scale": [35, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 37]
+          }
+        ]
+      },
+
+      {
+        "position": [25, 0, -75], //Middle mid spike Wall
+        "rotation": [0, 90, 0],
+        "scale": [45, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+          {
+            "type": "Collider",
+            "size": [6, 12, 47]
+          }
+        ]
+      },
+
+      {
+        "position": [108, 0, -118], //Middle top flat Wall
+        "rotation": [0, 0, 0],
+        "scale": [84, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+
+          {
+            "type": "Collider",
+            "size": [86, 12, 6]
+          }
+        ]
+      },
+
+      {
+        "position": [112, 0, -26], //Middle mid flat Wall
+        "rotation": [0, 0, 0],
+        "scale": [20, 10, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "wall"
+          },
+
+          {
+            "type": "Collider",
+            "size": [20.1, 12, 6]
+          }
+        ]
+      },
+      {
+        "position": [38, 0, -190], //Door
+        "rotation": [0, 0, 0],
+        "scale": [11, 9.8, 2],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "cube",
+            "material": "glass"
+          },
+
+          {
+            "type": "Collider",
+            "size": [20.1, 12, 6]
+          }
+        ]
+      }
+    ]
+  }
+}
